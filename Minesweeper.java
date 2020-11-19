@@ -1,49 +1,36 @@
 class Solution {
-    private static final char MINE = 'M';
-    private static final char EMPTY = 'E';
-    private static final char DISCOVERED_MINE = 'X';
-    private static final char DISCOVERED_EMPTY = 'B';
-
-    
-    public char[][] updateBoard(char[][] board, int[] click) {
-        int y = click[0];
-        int x = click[1];
-        if (board[y][x] == MINE) {
-            board[y][x] = DISCOVERED_MINE;
-            return board;
-        } else {
-            discover(board, x, y);
-        }
-        return board;
-    }
-    
-    private void discover(char[][] board, int x, int y) {
-        int nbMines = 0;
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (!isInBounds(board, x + j, y + i)) continue;
-                if (board[y + i][x + j] == MINE) {
-                    nbMines++;
+    public int getMines(char[][]board,int x,int y){
+        int n=0;
+        for(int i=x-1;i<=x+1;i++){
+                for(int j=y-1;j<=y+1;j++){
+                    if(i>=0 && i<board.length && j>=0 && j<board[0].length && board[i][j]=='M')
+                        n++;
                 }
             }
-        }
-        if (nbMines == 0) {
-            board[y][x] = DISCOVERED_EMPTY;
-            for (int i = -1; i <= 1; i++) {
-                for (int j = -1; j <= 1; j++) {
-                    if (!isInBounds(board, x + j, y + i)) continue;
-                    if (i == 0 && j == 0) continue;
-                    if (board[y + i][x + j] != DISCOVERED_EMPTY && board[y + i][x + j] != MINE) {
-                        discover(board, x + j, y + i);
+        return n;
+    }
+    public char[][] updateBoard(char[][] board, int[] click) {
+        int x=click[0];
+        int y=click[1];
+        if(board[x][y]=='M')
+            board[x][y]='X';
+        else{
+            int num= getMines(board, x,y);
+            if(num!=0)
+                board[x][y]=Character.forDigit(num,10);
+            else{
+                board[x][y]='B';
+                for(int i=x-1;i<=x+1;i++){
+                for(int j=y-1;j<=y+1;j++){
+                    int []nclick=new int[2];
+                    nclick[0]=i;
+                    nclick[1]=j;
+                    if(i>=0 && i<board.length && j>=0 && j<board[0].length && board[i][j]!='B')
+                        updateBoard(board,nclick);
                     }
                 }
             }
-        } else {
-            board[y][x] = Character.forDigit(nbMines, 10);
         }
-    }
-    
-    private boolean isInBounds(char[][] board, int x, int y) {
-        return y >= 0 && y < board.length && x >= 0 && x < board[y].length;
+            return board;    
     }
 }
