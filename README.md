@@ -1,2 +1,5 @@
-# My-Concept-codes
-These are some of my concept learning codes.
+LEETCODE-QUESTIONS
+
+These are my solutions in java and python3 for the Leetcode problems.
+
+https://leetcode.com/problemset/all/
