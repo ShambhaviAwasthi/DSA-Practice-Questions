@@ -32,6 +32,7 @@ else{
 arr[k]=R[j];
 j++;
 }
+        k++;
 }
 
 /* Copy remaining elements of L[] if any */
